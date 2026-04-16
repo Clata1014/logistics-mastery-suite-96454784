@@ -3,6 +3,7 @@ import { Factory, Home, Warehouse, ShoppingCart, Cloud, Truck, Zap, RotateCcw, A
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import InstructorOverride from '@/components/InstructorOverride';
 
 type NodeType = 'fabrica' | 'mayorista' | 'minorista' | 'nube' | 'flete' | 'cliente';
 
@@ -429,12 +430,26 @@ export default function ChannelBuilder({ onVictory, startProduct = 0, onProductA
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-            <Lock size={14} className="text-emerald-400 shrink-0" />
-            <p className="text-[11px] text-emerald-300/90">
-              Ruta archivada en la auditoría. Esta sección quedó bloqueada (modo solo lectura).
-            </p>
-          </div>
+          <InstructorOverride
+            sectionLabel={`${product.emoji} ${product.title}`}
+            onUnlock={() => {
+              // Borrar SOLO la entrada de este producto del audit
+              const remaining = loadAudit().filter(e => e.productIdx !== currentProduct);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
+              // Vaciar lienzo de esta sección
+              setRoute([]);
+              setSubPoints([]);
+              setTextInput('');
+              setAlert('');
+            }}
+          >
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+              <Lock size={14} className="text-emerald-400 shrink-0" />
+              <p className="text-[11px] text-emerald-300/90">
+                Ruta archivada en la auditoría. Esta sección quedó bloqueada (modo solo lectura).
+              </p>
+            </div>
+          </InstructorOverride>
         )}
       </div>
 
