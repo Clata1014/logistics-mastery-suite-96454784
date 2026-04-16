@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import InstructorOverride from '@/components/InstructorOverride';
 
 const STORAGE_KEY = 'crisis1_cedi_console_v1';
 
@@ -178,9 +179,23 @@ const Crisis1Console = forwardRef<Crisis1Ref>((_, ref) => {
           [🗑 LIMPIAR FLUJO]
         </button>
         {locked && (
-          <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest">
-            🔒 Registrado — solo lectura
-          </span>
+          <InstructorOverride
+            sectionLabel="Consola Interactiva CEDI (Crisis 1)"
+            onUnlock={() => {
+              // Borrar SOLO el state de esta consola del localStorage
+              try {
+                localStorage.removeItem(STORAGE_KEY);
+              } catch {}
+              setLocked(false);
+              setNodes([]);
+              setText('');
+              setPendingNode(null);
+            }}
+          >
+            <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest">
+              🔒 Registrado — solo lectura
+            </span>
+          </InstructorOverride>
         )}
       </div>
 
