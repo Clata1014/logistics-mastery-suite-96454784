@@ -87,6 +87,14 @@ export default function SimuladorApp() {
     setShowPenalty(true);
   }, [builderProduct]);
 
+  // Helper: log a Phase 1-3 question/PIN entry for the Final Report
+  const logPhase13 = useCallback((entry: {
+    step: string; caseTitle: string; isCorrect: boolean;
+    studentAnswer: string; correctAnswer: string; explanation: string;
+  }) => {
+    savePhase13Entry({ ...entry, timestamp: Date.now() });
+  }, []);
+
   // Timer click bypass: cycle through phases
   const handleTimerClick = () => {
     const skipOrder: Phase[] = ['c1_channel', 'c2_channel', 'c3_channel', 'c4_builder', 'c5_r1', 'c5_r6', 'victory'];
