@@ -1,6 +1,7 @@
 import { useState, useRef, ReactNode } from 'react';
 import { speak } from '@/lib/speech';
 import { detectSpam, SPAM_PENALTY } from '@/lib/keywordValidator';
+import { saveCrisisAuditEntry } from '@/lib/finalReport';
 import SignatureCanvas from './SignatureCanvas';
 
 interface CrisisWrapperProps {
@@ -54,12 +55,24 @@ export default function CrisisWrapper({
       alert('⚠️ Debes firmar el canvas como Gerente Responsable antes de autorizar.');
       return;
     }
-    if (validateGame()) {
+    const stateDesc = getGameStateDescription ? getGameStateDescription() : '';
+    const isCorrect = validateGame();
+
+    // Persist crisis entry to localStorage for the Final Report
+    saveCrisisAuditEntry({
+      crisisNumber,
+      title,
+      isCorrect,
+      studentStateDescription: stateDesc,
+      justification: justification.trim(),
+      theoryExplanation: errorExplanation,
+      timestamp: Date.now(),
+    });
+
+    if (isCorrect) {
       speak(successVoice);
       onSuccess();
     } else {
-      // Build hyper-detailed error
-      const stateDesc = getGameStateDescription ? getGameStateDescription() : '';
       const truncatedText = justification.length > 200 ? justification.slice(0, 200) + '...' : justification;
       const detail = `❌ CRISIS ${crisisNumber}: ${title}\n✍️ TU JUSTIFICACIÓN: "${truncatedText}"\n${stateDesc}`;
       onError(errorExplanation, detail);

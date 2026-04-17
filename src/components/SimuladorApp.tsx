@@ -15,6 +15,7 @@ import Crisis3Console, { Crisis3Ref } from './crisis/Crisis3Console';
 import Crisis4Console, { Crisis4Ref } from './crisis/Crisis4Console';
 import Crisis5Console, { Crisis5Ref } from './crisis/Crisis5Console';
 import Crisis6Console, { Crisis6Ref } from './crisis/Crisis6Console';
+import { savePhase13Entry } from '@/lib/finalReport';
 
 type Phase =
   | 'start'
