@@ -174,8 +174,8 @@ export default function SimuladorApp() {
             options={['Canal Directo', 'Canal Corto', 'Canal Largo']}
             successVoice="¡Excelente análisis gerencial! Al obligarnos a usar un Mayorista para fraccionar la carga, es un Canal Largo. Levántate y valida tu ruta."
             errorVoice="¡Error logístico garrafal! Si usas el canal directo o corto, intentarías meter una tractomula gigante al barrio. Acabas de destruir los cables de la luz por no usar a un mayorista. Operación detenida por penalidad."
-            onSuccess={() => setPhase('c1_pins')}
-            onError={() => triggerPenalty('¡Error logístico garrafal! Si usas el canal directo o corto, intentarías meter una tractomula gigante al barrio.', 'c1_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso Postobón)')}
+            onSuccess={() => { logPhase13({ step: 'Caso 1 — Tipo de Canal', caseTitle: '📦 CASO 1: POSTOBÓN (Consumo Masivo)', isCorrect: true, studentAnswer: 'Canal Largo', correctAnswer: 'Canal Largo', explanation: 'Postobón usa Mayorista para fraccionar tractomulas a furgones que entran al barrio.' }); setPhase('c1_pins'); }}
+            onError={(answer) => { logPhase13({ step: 'Caso 1 — Tipo de Canal', caseTitle: '📦 CASO 1: POSTOBÓN (Consumo Masivo)', isCorrect: false, studentAnswer: answer || '(no registrada)', correctAnswer: 'Canal Largo', explanation: 'Postobón usa Mayorista para fraccionar tractomulas a furgones que entran al barrio.' }); triggerPenalty('¡Error logístico garrafal! Si usas el canal directo o corto, intentarías meter una tractomula gigante al barrio.', 'c1_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso Postobón)'); }}
           />
         )}
         {phase === 'c1_pins' && (
@@ -189,8 +189,8 @@ export default function SimuladorApp() {
               { pin: '60', voice: '¡Canal Largo completado con éxito! Excelente gestión gerencial.' },
             ]}
             errorVoice="¡Error lógico! Te saltaste un eslabón de la cadena. En el Canal Largo, la carga debe pasar por el Mayorista antes de llegar a la tienda. Sistema bloqueado."
-            onComplete={() => setPhase('c2_channel')}
-            onError={(voice) => triggerPenalty(voice, 'c2_channel', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 1)')}
+            onComplete={() => { logPhase13({ step: 'Caso 1 — Ruta Física PIN', caseTitle: '📦 CASO 1: POSTOBÓN (Canal Largo)', isCorrect: true, studentAnswer: '10 → 20 → 30 → 60', correctAnswer: '10 (Fábrica) → 20 (Mayorista) → 30 (Tienda) → 60 (Cliente)', explanation: 'La carga pasa por Mayorista antes de la tienda en Canal Largo.' }); setPhase('c2_channel'); }}
+            onError={(voice) => { logPhase13({ step: 'Caso 1 — Ruta Física PIN', caseTitle: '📦 CASO 1: POSTOBÓN (Canal Largo)', isCorrect: false, studentAnswer: 'PIN incorrecto / orden saltado', correctAnswer: '10 → 20 → 30 → 60', explanation: 'La carga debe pasar por Mayorista antes de llegar a la tienda.' }); triggerPenalty(voice, 'c2_channel', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 1)'); }}
           />
         )}
         {phase === 'c2_channel' && (
