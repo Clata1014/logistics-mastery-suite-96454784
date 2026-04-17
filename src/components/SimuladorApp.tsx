@@ -204,8 +204,8 @@ export default function SimuladorApp() {
             options={['Canal Directo', 'Canal Corto', 'Canal Largo']}
             successVoice="Correcto. Canal Corto. Eliminan al mayorista para reducir costos y transferir el ahorro al consumidor. Ve a los carteles y demuestra la ruta."
             errorVoice="¡Error Gerencial! D1 no vende directo a las casas desde la fábrica (Directo), ni usa mayoristas (Largo). Usa un Canal Corto porque el supermercado minorista es el único intermediario."
-            onSuccess={() => setPhase('c2_pins')}
-            onError={() => triggerPenalty('¡Error Gerencial! D1 no vende directo a las casas desde la fábrica (Directo), ni usa mayoristas (Largo). Usa un Canal Corto.', 'c2_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso D1/Ara)')}
+            onSuccess={() => { logPhase13({ step: 'Caso 2 — Tipo de Canal', caseTitle: '🛒 CASO 2: HARD DISCOUNT (D1/Ara)', isCorrect: true, studentAnswer: 'Canal Corto', correctAnswer: 'Canal Corto', explanation: 'Hard Discount elimina al mayorista — el supermercado minorista es el único intermediario.' }); setPhase('c2_pins'); }}
+            onError={(answer) => { logPhase13({ step: 'Caso 2 — Tipo de Canal', caseTitle: '🛒 CASO 2: HARD DISCOUNT (D1/Ara)', isCorrect: false, studentAnswer: answer, correctAnswer: 'Canal Corto', explanation: 'Hard Discount elimina al mayorista — el supermercado minorista es el único intermediario.' }); triggerPenalty('¡Error Gerencial! D1 no vende directo a las casas desde la fábrica (Directo), ni usa mayoristas (Largo). Usa un Canal Corto.', 'c2_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso D1/Ara)'); }}
           />
         )}
         {phase === 'c2_pins' && (
@@ -218,8 +218,8 @@ export default function SimuladorApp() {
               { pin: '60', hint: '📍 Misión 3: Entrega final (CLIENTE)', voice: '¡Canal Corto completado con éxito! Máxima eficiencia en costos.' },
             ]}
             errorVoice="¡Error! Agregaste un intermediario innecesario. El Hard Discount conecta fábrica directo con supermercado. No usan mayoristas ni tiendas TAT. Sistema bloqueado."
-            onComplete={() => setPhase('c3_channel')}
-            onError={(voice) => triggerPenalty(voice, 'c3_channel', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 2)')}
+            onComplete={() => { logPhase13({ step: 'Caso 2 — Ruta Física PIN', caseTitle: '🛒 CASO 2: HARD DISCOUNT (Canal Corto)', isCorrect: true, studentAnswer: '10 → 40 → 60', correctAnswer: '10 (Fábrica) → 40 (Supermercado) → 60 (Cliente)', explanation: 'Sin mayoristas ni TAT — Fábrica conecta directo con el supermercado.' }); setPhase('c3_channel'); }}
+            onError={(voice) => { logPhase13({ step: 'Caso 2 — Ruta Física PIN', caseTitle: '🛒 CASO 2: HARD DISCOUNT (Canal Corto)', isCorrect: false, studentAnswer: 'PIN incorrecto / orden saltado', correctAnswer: '10 → 40 → 60', explanation: 'Sin mayoristas ni TAT — Fábrica conecta directo con el supermercado.' }); triggerPenalty(voice, 'c3_channel', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 2)'); }}
           />
         )}
         {phase === 'c3_channel' && (
@@ -233,8 +233,8 @@ export default function SimuladorApp() {
             options={['Canal Largo', 'Canal Corto', 'Canal Directo']}
             successVoice="Correcto. Canal Directo. La marca entrega el producto digital al cliente final por internet, sin intermediarios físicos. Ve a los carteles y demuestra la ruta."
             errorVoice="¡Error! Cuando vendes productos digitales por internet, redes sociales o web, eliminas intermediarios físicos. Eso es un Canal Directo, no Largo ni Corto."
-            onSuccess={() => setPhase('c3_pins')}
-            onError={() => triggerPenalty('¡Error! Cuando vendes productos digitales por internet, redes sociales o web, eliminas intermediarios físicos. Eso es un Canal Directo.', 'c3_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso Producto Digital / E-commerce)')}
+            onSuccess={() => { logPhase13({ step: 'Caso 3 — Tipo de Canal', caseTitle: '💻 CASO 3: PRODUCTO DIGITAL / E-COMMERCE', isCorrect: true, studentAnswer: 'Canal Directo', correctAnswer: 'Canal Directo', explanation: 'Producto digital viaja por internet sin intermediarios físicos.' }); setPhase('c3_pins'); }}
+            onError={(answer) => { logPhase13({ step: 'Caso 3 — Tipo de Canal', caseTitle: '💻 CASO 3: PRODUCTO DIGITAL / E-COMMERCE', isCorrect: false, studentAnswer: answer, correctAnswer: 'Canal Directo', explanation: 'Producto digital viaja por internet sin intermediarios físicos.' }); triggerPenalty('¡Error! Cuando vendes productos digitales por internet, redes sociales o web, eliminas intermediarios físicos. Eso es un Canal Directo.', 'c3_pins', 'Fase 1-3: Seleccionó mal el tipo de canal logístico (Caso Producto Digital / E-commerce)'); }}
           />
         )}
         {phase === 'c3_pins' && (
@@ -246,8 +246,8 @@ export default function SimuladorApp() {
               { pin: '60', voice: '¡Canal Directo completado con éxito! Marca conectada al usuario final por la nube.' },
             ]}
             errorVoice="¡Error! El Canal Directo en e-commerce conecta la marca con el cliente vía internet, sin bodegas ni mayoristas. Sistema bloqueado."
-            onComplete={() => setPhase('c4_builder')}
-            onError={(voice) => triggerPenalty(voice, 'c4_builder', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 3 - Digital)')}
+            onComplete={() => { logPhase13({ step: 'Caso 3 — Ruta Digital PIN', caseTitle: '💻 CASO 3: PRODUCTO DIGITAL (Canal Directo)', isCorrect: true, studentAnswer: '50 → 60', correctAnswer: '50 (Plataforma digital) → 60 (Cliente)', explanation: 'Marca conecta con cliente vía internet, sin bodegas ni mayoristas.' }); setPhase('c4_builder'); }}
+            onError={(voice) => { logPhase13({ step: 'Caso 3 — Ruta Digital PIN', caseTitle: '💻 CASO 3: PRODUCTO DIGITAL (Canal Directo)', isCorrect: false, studentAnswer: 'PIN incorrecto', correctAnswer: '50 → 60', explanation: 'Marca conecta con cliente vía internet, sin bodegas ni mayoristas.' }); triggerPenalty(voice, 'c4_builder', 'Fase 1-3: Ingresó mal un PIN de seguridad de canales (Caso 3 - Digital)'); }}
           />
         )}
 
