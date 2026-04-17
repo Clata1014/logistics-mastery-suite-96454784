@@ -16,7 +16,7 @@ interface ChannelQuestionProps {
   successVoice: string;
   errorVoice: string;
   onSuccess: () => void;
-  onError: () => void;
+  onError: (chosen: string) => void;
 }
 
 const ICONS = {
@@ -56,7 +56,7 @@ export default function ChannelQuestion({
         onSuccess();
       }, 3000);
     } else {
-      onError();
+      onError(choice);
       setDisabled(false);
     }
   };
